@@ -1,14 +1,44 @@
-version: "3"
+version: "3.8"
+
 services:
-  mongodb-container-one:
-    image: mongo:latest
-    container_name: "mongodb-container-one"
+  mongo:
+    image: mongo:5.0
+    container_name: mongo
     ports:
-      - 28000:27017
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+    networks:
+      - app-network
+
   springboot-with-mongodb-container-one:
-    image: ranjan715/springboot-with-mongodb:v11
-    container_name: springboot-with-mongodb-container-one
+    image: java-app
     ports:
       - 8090:8081
-    links:
-      - mongodb-container-one
+    depends_on:
+      mongo:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1024M
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+
+networks:
+  app-network:
+    driver: bridge
