@@ -22,7 +22,7 @@ services:
       - app-network
 
   springboot-with-mongodb-container-one:
-    image: java-app
+    image: mtiriwissem/java-app
     ports:
       - 8090:8081
     depends_on:
