@@ -47,7 +47,7 @@ pipeline {
                     script {
                         // Run the Ansible playbook for deployment
                         sh '''
-                            ansible-playbook -i inventory.ini deploy.yml \
+                            ansible-playbook -i ansible/inventory.ini ansible/deploy.yml \
                                              --private-key $SSH_KEY
                         '''
                     }
