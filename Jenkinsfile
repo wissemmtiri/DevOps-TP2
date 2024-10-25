@@ -41,24 +41,18 @@ pipeline {
             }
         }
 
-        stage('Deploy to remote VM') {
+        stage('Deploy with Ansible') {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'vm-ssh-credentials', keyFileVariable: 'SSH_KEY')]) {
                     script {
+                        // Run the Ansible playbook for deployment
                         sh '''
-                            ssh -o StrictHostKeyChecking=no -i $SSH_KEY ${TARGET_VM} << EOF
-                            cd ${TARGET_PATH} || mkdir -p ${TARGET_PATH} && cd ${TARGET_PATH}
-                            git clone ${GIT_REPO}
-                            
-                            cd ${REPO_NAME}/src/main/resources
-                            docker-compose down
-                            docker-compose pull
-                            docker-compose up -d
+                            ansible-playbook -i inventory.ini deploy.yml \
+                                             --private-key $SSH_KEY
                         '''
                     }
                 }
             }
         }
-
     }
 }

@@ -1,0 +1,31 @@
+---
+- name: Deploy application
+  hosts: target_vm
+  become: true
+
+  tasks:
+    - name: Ensure deployment directory exists
+      file:
+        path: /home/user/deployment
+        state: directory
+
+    - name: Pull latest code from GitHub
+      git:
+        repo: 'https://github.com/wissemmtiri/DevOps-TP2.git'
+        dest: /home/finetune-project/deployment
+        version: main
+
+    - name: Stop existing containers
+      command: docker-compose down
+      args:
+        chdir: /home/finetune-project/deployment/src/main/resources
+
+    - name: Pull the latest Docker image
+      command: docker-compose pull
+      args:
+        chdir: /home/finetune-project/deployment/src/main/resources
+
+    - name: Start containers with Docker Compose
+      command: docker-compose up -d
+      args:
+        chdir: /home/finetune-project/deployment/src/main/resources
