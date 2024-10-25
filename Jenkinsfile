@@ -5,6 +5,8 @@ pipeline {
         DOCKER_IMAGE = "mtiriwissem/java-app"
         GIT_REPO = "https://github.com/wissemmtiri/DevOps-TP2.git"
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
+        TARGET_VM = "finetune-project@74.235.232.144"
+        TARGET_PATH = "/home/finetune-project/deployment"
     }
 
     stages {
@@ -37,5 +39,17 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to remote VM') {
+            withCredentials([sshUserPrivateKey(credentialsId: 'vm-ssh-credentials', keyFileVariable: 'SSH_KEY')]) {
+                    script {
+                        sh """
+                            ssh -o StrictHostKeyChecking=no -i $SSH_KEY ${TARGET_VM} << EOF
+                            cd ${TARGET_PATH} || mkdir -p ${TARGET_PATH} && cd ${TARGET_PATH}
+                        """
+                    }
+            }
+        }
+
     }
 }
