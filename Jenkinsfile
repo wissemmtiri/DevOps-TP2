@@ -41,13 +41,15 @@ pipeline {
         }
 
         stage('Deploy to remote VM') {
-            withCredentials([sshUserPrivateKey(credentialsId: 'vm-ssh-credentials', keyFileVariable: 'SSH_KEY')]) {
+            steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'vm-ssh-credentials', keyFileVariable: 'SSH_KEY')]) {
                     script {
                         sh """
                             ssh -o StrictHostKeyChecking=no -i $SSH_KEY ${TARGET_VM} << EOF
                             cd ${TARGET_PATH} || mkdir -p ${TARGET_PATH} && cd ${TARGET_PATH}
                         """
                     }
+                }
             }
         }
 
