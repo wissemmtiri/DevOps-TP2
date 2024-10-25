@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "mtiriwissem/java-app"
         GIT_REPO = "https://github.com/wissemmtiri/DevOps-TP2.git"
+        REPO_NAME = "DevOps-TP2"
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
         TARGET_VM = "finetune-project@74.235.232.144"
         TARGET_PATH = "/home/finetune-project/deployment"
@@ -47,6 +48,13 @@ pipeline {
                         sh """
                             ssh -o StrictHostKeyChecking=no -i $SSH_KEY ${TARGET_VM} << EOF
                             cd ${TARGET_PATH} || mkdir -p ${TARGET_PATH} && cd ${TARGET_PATH}
+                            git clone ${GIT_REPO}
+                            
+                            cd ${REPO_NAME}/src/main/resources
+                            docker-compose down
+                            docker-compose pull
+                            docker-compose up -d
+                            EOF
                         """
                     }
                 }
