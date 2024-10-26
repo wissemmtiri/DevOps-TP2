@@ -19,6 +19,11 @@ public class ItemController {
     @Autowired
     private ItemRepository itemRepository;
 
+    @GetMapping("/welcome")
+    public String welcome() {
+        return "Welcome to Item Service";
+    }
+
     @GetMapping("/items")
     public List<ItemModel> getAllItems() {
         return itemRepository.findAll();
