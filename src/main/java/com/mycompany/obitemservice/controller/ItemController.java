@@ -21,7 +21,7 @@ public class ItemController {
 
     @GetMapping("/welcome")
     public String welcome() {
-        return "Breaking Changes!!";
+        return "New Feature Available!";
     }
 
     @GetMapping("/items")
