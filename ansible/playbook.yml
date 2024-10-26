@@ -6,7 +6,7 @@
   tasks:
     - name: Ensure deployment directory exists
       file:
-        path: /home/user/deployment
+        path: /home/finetune-project/deployment
         state: directory
 
     - name: Pull latest code from GitHub
