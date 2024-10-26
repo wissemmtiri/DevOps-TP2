@@ -4,10 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "mtiriwissem/java-app"
         GIT_REPO = "https://github.com/wissemmtiri/DevOps-TP2.git"
-        REPO_NAME = "DevOps-TP2"
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
-        TARGET_VM = "finetune-project@74.235.232.144"
-        TARGET_PATH = "/home/finetune-project/deployment"
     }
 
     stages {
@@ -45,7 +42,6 @@ pipeline {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'vm-ssh-credentials', keyFileVariable: 'SSH_KEY')]) {
                     script {
-                        // Run the Ansible playbook for deployment
                         sh '''
                             ansible-playbook -i ansible/inventory.ini ansible/playbook.yml \
                                              --private-key $SSH_KEY
