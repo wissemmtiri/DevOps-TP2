@@ -44,7 +44,8 @@ pipeline {
                     script {
                         sh '''
                             ansible-playbook -i ansible/inventory.ini ansible/playbook.yml \
-                                             --private-key $SSH_KEY
+                                             --private-key $SSH_KEY \
+                                             -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
                         '''
                     }
                 }
