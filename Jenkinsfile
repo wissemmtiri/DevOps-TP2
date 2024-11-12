@@ -38,18 +38,18 @@ pipeline {
             }
         }
 
-        stage('Deploy with Ansible') {
-            steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'vm-ssh-credentials', keyFileVariable: 'SSH_KEY')]) {
-                    script {
-                        sh '''
-                            ansible-playbook -i ansible/inventory.ini ansible/playbook.yml \
-                                             --private-key $SSH_KEY \
-                                             -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
-                        '''
-                    }
-                }
-            }
-        }
+        // stage('Deploy with Ansible') {
+        //     steps {
+        //         withCredentials([sshUserPrivateKey(credentialsId: 'vm-ssh-credentials', keyFileVariable: 'SSH_KEY')]) {
+        //             script {
+        //                 sh '''
+        //                     ansible-playbook -i ansible/inventory.ini ansible/playbook.yml \
+        //                                      --private-key $SSH_KEY \
+        //                                      -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
+        //                 '''
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
