@@ -47,6 +47,16 @@ pipeline {
                 }
             }
         }
+        stage('Rollout Status') {
+            steps {
+                script {
+                    sh '''
+                        export KUBECONFIG=/var/jenkins_home/kube
+                        kubectl rollout status deployment/web-app-depl
+                    '''
+                }
+            }
+        }
         // stage('Deploy with Ansible') {
         //     steps {
         //         withCredentials([sshUserPrivateKey(credentialsId: 'vm-ssh-credentials', keyFileVariable: 'SSH_KEY')]) {
