@@ -53,6 +53,7 @@ pipeline {
                     sh '''
                         export KUBECONFIG=/var/jenkins_home/kube
                         kubectl rollout status deployment/web-app-depl
+                        echo "Rollout Done"
                     '''
                 }
             }
