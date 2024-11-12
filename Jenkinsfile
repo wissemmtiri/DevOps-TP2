@@ -41,6 +41,7 @@ pipeline {
             steps {
                 script {
                     sh '''
+                        export KUBECONFIG=/var/jenkins_home/kube
                         kubectl set image deployment/web-app-depl web-application=${DOCKER_IMAGE} --record
                     '''
                 }
