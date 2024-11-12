@@ -37,7 +37,15 @@ pipeline {
                 }
             }
         }
-
+        stage('Deploy on Kubernetes') {
+            steps {
+                script {
+                    sh '''
+                        kubectl set image deployment/web-app-depl web-application=${DOCKER_IMAGE} --record
+                    '''
+                }
+            }
+        }
         // stage('Deploy with Ansible') {
         //     steps {
         //         withCredentials([sshUserPrivateKey(credentialsId: 'vm-ssh-credentials', keyFileVariable: 'SSH_KEY')]) {
